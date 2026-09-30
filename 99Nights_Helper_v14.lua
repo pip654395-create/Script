@@ -1,5 +1,5 @@
 --========================================================================
---  🔥 99 NIGHTS HELPER v14 — BUG-SWEEP EDITION
+--  🔥 99 NIGHTS HELPER v1 — BUG-SWEEP EDITION
 --  Synced weapon dropdowns • tree-count fixed • idle = zero recurring work
 --  Tree v2 kept: [$Resource] query, Trunk anchor, GetHitRegId, big trees
 --========================================================================
