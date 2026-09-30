@@ -525,7 +525,8 @@ local function hopNow()
             local cursor = nil
             local candidates = {}
 
-            for _ = 1, 3 do
+            -- sortOrder=Asc → fewest players first; prefer exactly 1 player
+            for _ = 1, 5 do
                 local url = "https://games.roblox.com/v1/games/" .. PlaceId
                     .. "/servers/Public?sortOrder=Asc&limit=100"
                     .. (cursor and ("&cursor=" .. HttpService:UrlEncode(cursor)) or "")
@@ -552,7 +553,10 @@ local function hopNow()
                         local playing = tonumber(server.playing) or 0
                         local maxPlayers = tonumber(server.maxPlayers) or 999
                         if not HopSkipFull or playing < maxPlayers then
-                            candidates[#candidates + 1] = server.id
+                            candidates[#candidates + 1] = {
+                                id = server.id,
+                                playing = playing,
+                            }
                         end
                     end
                 end
@@ -572,8 +576,18 @@ local function hopNow()
                 return
             end
 
-            for i = 1, math.min(#candidates, 8) do
-                local jobId = candidates[i]
+            -- 1 player first, then lowest player count
+            table.sort(candidates, function(a, b)
+                local a1 = (a.playing == 1) and 0 or 1
+                local b1 = (b.playing == 1) and 0 or 1
+                if a1 ~= b1 then
+                    return a1 < b1
+                end
+                return a.playing < b.playing
+            end)
+
+            for i = 1, math.min(#candidates, 10) do
+                local jobId = candidates[i].id
                 local tpOk = pcall(function()
                     TeleportService:TeleportToPlaceInstance(PlaceId, jobId, LocalPlayer)
                 end)
