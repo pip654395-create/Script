@@ -171,7 +171,7 @@ getKeyCorner.Parent = getKeyBtn
 
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.fromOffset(240, 285)
+mainFrame.Size = UDim2.fromOffset(240, 340)
 mainFrame.Position = UDim2.new(0.5, -120, 0.5, -142)
 mainFrame.BackgroundColor3 = Color3.fromRGB(15, 5, 8)
 mainFrame.BorderSizePixel = 0
@@ -423,12 +423,40 @@ scaleCorner.CornerRadius = UDim.new(0, 7)
 scaleCorner.Parent = scaleButton
 
 --==================================================
--- HOP NOW BUTTON (MISC)
+-- HOP SKIP FULL + HOP NOW (MISC)
 --==================================================
+
+local HopSkipFull = true
+
+local hopSkipFullBtn = Instance.new("TextButton")
+hopSkipFullBtn.Size = UDim2.new(1, 0, 0, 32)
+hopSkipFullBtn.Position = UDim2.fromOffset(0, 130)
+hopSkipFullBtn.BackgroundColor3 = Color3.fromRGB(105, 10, 25)
+hopSkipFullBtn.Text = "⛔ Skip Full : ON"
+hopSkipFullBtn.TextColor3 = Color3.fromRGB(255, 220, 225)
+hopSkipFullBtn.Font = Enum.Font.GothamBold
+hopSkipFullBtn.TextSize = 10
+hopSkipFullBtn.ZIndex = 12
+hopSkipFullBtn.Parent = miscContent
+
+local hopSkipFullCorner = Instance.new("UICorner")
+hopSkipFullCorner.CornerRadius = UDim.new(0, 7)
+hopSkipFullCorner.Parent = hopSkipFullBtn
+
+hopSkipFullBtn.Activated:Connect(function()
+    HopSkipFull = not HopSkipFull
+    if HopSkipFull then
+        hopSkipFullBtn.Text = "⛔ Skip Full : ON"
+        hopSkipFullBtn.BackgroundColor3 = Color3.fromRGB(105, 10, 25)
+    else
+        hopSkipFullBtn.Text = "⛔ Skip Full : OFF"
+        hopSkipFullBtn.BackgroundColor3 = Color3.fromRGB(55, 8, 15)
+    end
+end)
 
 local hopNowBtn = Instance.new("TextButton")
 hopNowBtn.Size = UDim2.new(1, 0, 0, 32)
-hopNowBtn.Position = UDim2.fromOffset(0, 130)
+hopNowBtn.Position = UDim2.fromOffset(0, 170)
 hopNowBtn.BackgroundColor3 = Color3.fromRGB(55, 8, 15)
 hopNowBtn.Text = "🚀 Hop Now"
 hopNowBtn.TextColor3 = Color3.fromRGB(255, 220, 225)
@@ -520,9 +548,12 @@ local function hopNow()
                     if type(server) == "table"
                         and type(server.id) == "string"
                         and server.id ~= game.JobId
-                        and (tonumber(server.playing) or 0) < (tonumber(server.maxPlayers) or 999)
                     then
-                        candidates[#candidates + 1] = server.id
+                        local playing = tonumber(server.playing) or 0
+                        local maxPlayers = tonumber(server.maxPlayers) or 999
+                        if not HopSkipFull or playing < maxPlayers then
+                            candidates[#candidates + 1] = server.id
+                        end
                     end
                 end
 
@@ -921,7 +952,7 @@ minimizeButton.Activated:Connect(function()
         minimizeButton.Text = "-"
         mainTab.Visible = true
         miscTab.Visible = true
-        mainFrame.Size = UDim2.fromOffset(240, 285)
+        mainFrame.Size = UDim2.fromOffset(240, 340)
         if mainTab.BackgroundColor3 == Color3.fromRGB(105, 10, 25) then
             mainContent.Visible = true
         else
