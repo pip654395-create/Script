@@ -143,7 +143,7 @@ end
 
 local fpsFrame = Instance.new("Frame")
 fpsFrame.Name = "FpsMsDisplay"
-fpsFrame.Size = UDim2.fromOffset(148, 32)
+fpsFrame.Size = UDim2.fromOffset(100, 25)
 fpsFrame.Position = UDim2.new(0.5, -74, 0, 12)
 fpsFrame.BackgroundColor3 = Theme.Background
 fpsFrame.BackgroundTransparency = 0.15
@@ -359,7 +359,7 @@ getKeyBtn.TextColor3 = Theme.TextDim
 
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.fromOffset(250, 400)
+mainFrame.Size = UDim2.fromOffset(250, 350)
 mainFrame.Position = UDim2.new(0.5, -125, 0.5, -150)
 mainFrame.BackgroundColor3 = Theme.Background
 mainFrame.BorderSizePixel = 0
@@ -1306,7 +1306,7 @@ minimizeButton.Activated:Connect(function()
         minimizeButton.Text = "−"
         mainTab.Visible = true
         miscTab.Visible = true
-        mainFrame.Size = UDim2.fromOffset(250, 400)
+        mainFrame.Size = UDim2.fromOffset(250, 350)
         if mainTab.BackgroundColor3 == Theme.Accent then
             mainContent.Visible = true
         else
